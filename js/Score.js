@@ -1,3 +1,3 @@
-export default class Score {
+class Score {
     
 }

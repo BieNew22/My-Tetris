@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>My Tetris</title>
 
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
     <link rel="stylesheet" type="text/css" href="./css/header.css">
     <link rel="stylesheet" type="text/css" href="./css/left_side.css">
     <link rel="stylesheet" type="text/css" href="./css/right_side.css">
@@ -13,17 +14,52 @@
     <link rel="stylesheet" type="text/css" href="./css/footer.css">
 </head>
 <body>
-    <div id="header"></div>
+    <div id="header">undefined</div>
+
     <div id="main">
-        <div id="right_side"></div>
+
+        <div id="left_side">
+            <div class="store_background">
+                <div id="store">
+
+                </div>
+            </div>
+            <div id="buttons">
+                <button id="start">start</button>
+                <button id="infor">infor</button>
+            </div>
+        </div>
+
         <div id="stage"></div>
-        <div id="left_side"></div>
+
+        <div id="right_side">
+            <div id="next_blocks">
+                <div class="next_background">
+                    <div id="next0" class="next_block"></div>
+                </div>
+                <div class="next_background">
+                    <div id="next1" class="next_block"></div>
+                </div>
+                <div class="next_background">
+                    <div id="next2" class="next_block"></div>
+                </div>
+                <div class="next_background">
+                    <div id="next3" class="next_block"></div>
+                </div>
+            </div>
+
+            <div id="score_board">
+                <div id="best_score">BEST : len(8)(score)</div>
+                <div id="now_score">NOW : None(0)</div>
+            </div>
+        </div>
     </div>
-    <div id="footer"></div>
+    
+    <div id="footer">undefined</div>
 
     <script type="text/javascript" src="./js/Block.js"></script>
     <script type="text/javascript" src="./js/Board.js"></script>
-    <script type="text/javascript" src="./js/Gmae.js"></script>
+    <script type="text/javascript" src="./js/Game.js"></script>
     <script type="text/javascript" src="./js/Score.js"></script>
     <script type="text/javascript" src="./js/main.js"></script>
 </body>

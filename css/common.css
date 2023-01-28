@@ -7,3 +7,25 @@
     justify-content: space-around;
 }
 
+
+.next_big_background,
+.next_background {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.next_big_background {
+    width: 110px;
+    height: 110px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 55px;
+}
+
+.next_background {
+    width: 90px;
+    height: 90px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 45px;
+}

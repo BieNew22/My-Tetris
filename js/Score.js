@@ -1,3 +1,5 @@
 class Score {
-    
+    constructor() {
+        
+    }
 }

@@ -1,1 +1,1 @@
-let board = new Board();
+let gameControl = new Game();

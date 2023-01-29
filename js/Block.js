@@ -59,9 +59,11 @@ class Block {
             // L mino
             [
                 6,
-                [1, 0],
-                [1, 0],
-                [1, 1]
+                [
+                    [1, 0],
+                    [1, 0],
+                    [1, 1]
+                ]
             ],
             // T mino
             [
@@ -91,11 +93,11 @@ class Block {
 
     make_shape() {
         if (this.pocket.length == 0) {
-            this.make_shape();
+            this.make_pocket();
         }
 
         // deep copy
-        return this.shapes[this.pocket.pop()].splice();
+        return this.shapes[this.pocket.pop()].slice();
     }
 
     rotate_270deg_shape(shape) {

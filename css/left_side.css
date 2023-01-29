@@ -1,0 +1,31 @@
+.store_background {
+    border: 1px solid black;
+}
+
+#buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+}
+
+.button_style {
+    width: 100%;
+    height: 35px;
+    border-radius: 10px;
+    color: black;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    background-image: linear-gradient(to top left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0));
+}
+
+.button_style:focus {
+    outline: none;
+}
+
+.button_style:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}

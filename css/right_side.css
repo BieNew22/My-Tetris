@@ -1,0 +1,32 @@
+#next_blocks {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 120px;
+    height: 390px;
+}
+
+#score_board {
+    width: 100%;
+    border: 1px solid black;
+}
+
+.score_text {
+    background-color: white;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    margin: 0px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.score_text:hover {
+    overflow: visible;
+}
+
+.score_title {
+    margin-top: 5px;
+}

@@ -1,12 +1,23 @@
+* {
+    user-select: none;
+}
+
 #main {
-    border: 1px solid black;
     width: 700px;
     height: 100%;
     display: flex;
     margin: auto;
-    justify-content: space-around;
+    justify-content: center;
 }
 
+.side_menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 150px;
+    height: auto;
+}
 
 .next_big_background,
 .next_background {

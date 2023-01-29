@@ -18,39 +18,45 @@
 
     <div id="main">
 
-        <div id="left_side">
-            <div class="store_background">
-                <div id="store">
-
-                </div>
+        <!-- left side menu -->
+        <div class="side_menu">
+            <div class="next_big_background">
+                <div id="store"></div>
             </div>
             <div id="buttons">
-                <button id="start">start</button>
-                <button id="infor">infor</button>
+                <button id="start" class="button_style">start</button>
+                <button id="infor" class="button_style">infor</button>
             </div>
         </div>
 
         <div id="stage"></div>
 
-        <div id="right_side">
+        <!-- right side menu-->
+        <div class="side_menu">
             <div id="next_blocks">
                 <div class="next_big_background">
-                    <div id="next0" class="next_block"></div>
+                    <div id="next0"></div>
                 </div>
                 <div class="next_background">
-                    <div id="next1" class="next_block"></div>
+                    <div id="next1"></div>
                 </div>
                 <div class="next_background">
-                    <div id="next2" class="next_block"></div>
+                    <div id="next2"></div>
                 </div>
                 <div class="next_background">
-                    <div id="next3" class="next_block"></div>
+                    <div id="next3"></div>
                 </div>
             </div>
 
             <div id="score_board">
-                <div id="best_score">BEST : len(8)(score)</div>
-                <div id="now_score">NOW : None(0)</div>
+                <div style="border-bottom: 1px solid black;">
+                    <h3 class="score_text score_title">BEST SCORE</h3>
+                    <p id="best_score" class="score_text">name(score)</p>
+                </div>
+                <div>
+                    <h3 class="score_text score_title">NOW SCORE</h3>
+                    <p id="now_score" class="score_text">none(none)</p>
+                </div>
             </div>
         </div>
     </div>

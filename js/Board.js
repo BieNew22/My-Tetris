@@ -5,13 +5,14 @@
  *          - control stage state : minos(blocks) existence
  *          - print mino(block) and shadow currunt position
  *          - display next minos(blocks) and stored mino(block)
- * Date of latest update - 2023.01.28 
+ * Date of latest update - 2023.02.02 
  */
 
 class Board {
     constructor() {
-        this.blockColorTable = ['rgba(0, 0, 0, 0.1', '#0080ff', '#ffff00', 
+        this.blockColorTable = ['rgba(0, 0, 0, 0.1)', '#0080ff', '#ffff00', 
             '#ff0000', '#008000', '#005282', '#ff7f00', '#8b00ff'];
+        this.shadowColor = "rgba(0, 0, 0, 0.4)";
 
         // stage width x height = 20 x 10
         // data format : [value(color), tag obj]
@@ -59,68 +60,79 @@ class Board {
         stageTag.appendChild(tableTag);
     }
 
-    print_now_block(offset, block) {
+    print_now_block(offset, shadowOffset, block) {
         // does not need check escape -> Game will check in moveable function
         // just need check in overflowing from the top. (start state)
+        
+        // merge print_now_block & print_block_shadow
+        // reason : all codes are the same expcept for the color to be set.
+
+
+        // oy <= soy : just need check is oy overflow
         var ox = offset[0];
         var oy = offset[1];
+
+        var sox = shadowOffset[0];
+        var soy = shadowOffset[1];
+
         var data = block[1];
 
         for (let i = 0; i < data.length; i++) {
             for (let j = 0; j < data[i].length; j++) {
-                // empty space Or overflowing from the top.
-                if (data[i][j] == 0 || oy + i >= this.stage.length) {
-                    continue;
+                // shadow : except empty space or overflowing from the top.
+                if (data[i][j] !=0 && soy + i >= 0){
+                    this.stage[soy + i][sox + j][1].style.backgroundColor = this.shadowColor;
                 }
 
-                this.stage[oy + i][ox + j][1].style.backgroundColor = this.blockColorTable[block[0]];
+                // block : except empty space Or overflowing from the top.
+                if (data[i][j] != 0 && oy + i >= 0) {
+                    this.stage[oy + i][ox + j][1].style.backgroundColor = this.blockColorTable[block[0]];
+                }
             }
         }
     }
 
     print_next_blocks(blocks) {
-        console.log(blocks)
         for (let i = 0; i < blocks.length; i++) {
-            var block = blocks[i]
-            var h = block[1].length;
-            var w = block[1][0].length;
-            var size = i == 0 ? 20 : 15;
+            let size = i == 0 ? 20 : 15;
 
-            // set display size
-            this.nextBlocksTag[i].style.width = String(w * (size + 1)) + "px";
-            this.nextBlocksTag[i].style.height = String(h * (size + 1)) + "px";
-
-            // remove all child : remove before next block div tag
-            while (this.nextBlocksTag[i].firstChild) {
-                this.nextBlocksTag[i].removeChild(this.nextBlocksTag[i].firstChild);
-            }
-
-            // add now next block
-            for (let j = 0; j < block[1].length; j++) {
-                for (let k = 0; k < block[1][j].length; k++) {
-                    let divTag = document.createElement("div");
-                    let divSize = i == 0 ? "20px" : "15px";
-
-                    divTag.style.width = divSize;
-                    divTag.style.height = divSize;
-                    
-                    if (block[1][j][k] == 0) {
-                        divTag.style.backgroundColor = "transparent";
-                    } else {
-                        divTag.style.backgroundColor = this.blockColorTable[block[0]];
-                    }
-
-                    this.nextBlocksTag[i].appendChild(divTag);
-                }
-            }
+            this.print_informative_block(blocks[i], size, this.nextBlocksTag[i]);
         }
     }
 
-    print_store_block() {
-
+    print_store_block(block) {
+        this.print_informative_block(block, 20, this.storeTag);
     }
 
-    print_block_shadow(offset, shadow) {
+    print_informative_block(block, size, displayTag) {
+        var h = block[1].length;
+        var w = block[1][0].length;
 
+        // set display size
+        displayTag.style.width = String(w * (size + 1)) + "px";
+        displayTag.style.height = String(h * (size + 1)) + "px";
+
+        // remove all child
+        while (displayTag.firstChild) {
+            displayTag.removeChild(displayTag.firstChild);
+        }
+
+        // add block
+        for (let i = 0; i < h; i++) {
+            for (let j = 0; j < w; j++) {
+                var divTag = document.createElement("div");
+
+                divTag.style.width = String(size) + "px";
+                divTag.style.height = String(size) + "px";
+
+                if (block[1][i][j] == 0) {
+                    divTag.style.backgroundColor = "transparent";
+                } else {
+                    divTag.style.backgroundColor = this.blockColorTable[block[0]];
+                }
+
+                displayTag.appendChild(divTag);
+            }
+        }
     }
 }

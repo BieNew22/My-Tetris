@@ -60,15 +60,32 @@ class Board {
         stageTag.appendChild(tableTag);
     }
 
-    print_now_block(offset, shadowOffset, block) {
+    place_now_block(offset, block) {
+        // does not need check esacpe -> Game.js will check and call.
+        var ox = offset[0];
+        var oy = offset[1];
+
+        for (let i = 0; i < block[1].length; i++) {
+            for (let j = 0; j < block[1][i].length; j++) {
+                if (block[1][i][j] == 0) {
+                    continue;
+                }
+
+                this.stage[oy + i][ox + j][0] = block[0];
+            }
+        }
+    }
+
+    draw_block(offset, shadowOffset, block, isErase) {
+        // isErase == true : erase block, isErase is false : print block
+
         // does not need check escape -> Game will check in moveable function
-        // just need check in overflowing from the top. (start state)
+        // just need check in overflowing from the top (start state) and empty space.
         
         // merge print_now_block & print_block_shadow
-        // reason : all codes are the same expcept for the color to be set.
+        // merge print_now_block & erase_now_block
+        // reason : all codes are the same.
 
-
-        // oy <= soy : just need check is oy overflow
         var ox = offset[0];
         var oy = offset[1];
 
@@ -77,34 +94,36 @@ class Board {
 
         var data = block[1];
 
+        let blockC = this.blockColorTable[block[0]];
+        let shadowC = this.shadowColor;
+
+        if (isErase) {
+            blockC = this.blockColorTable[0];
+            shadowC = this.blockColorTable[0];
+        }
+
         for (let i = 0; i < data.length; i++) {
             for (let j = 0; j < data[i].length; j++) {
-                // shadow : except empty space or overflowing from the top.
-                if (data[i][j] !=0 && soy + i >= 0){
-                    this.stage[soy + i][sox + j][1].style.backgroundColor = this.shadowColor;
+                // empty space
+                if (data[i][j] == 0) {
+                    continue;
                 }
 
-                // block : except empty space Or overflowing from the top.
-                if (data[i][j] != 0 && oy + i >= 0) {
-                    this.stage[oy + i][ox + j][1].style.backgroundColor = this.blockColorTable[block[0]];
+                // print shadow first : block can overlap shadow
+                if (soy + i >= 0) {
+                    this.stage[soy + i][sox + j][1].style.backgroundColor = shadowC;
+                }
+                
+                if (oy + i >= 0) {
+                    this.stage[oy + i][ox + j][1].style.backgroundColor = blockC;
                 }
             }
         }
     }
 
-    print_next_blocks(blocks) {
-        for (let i = 0; i < blocks.length; i++) {
-            let size = i == 0 ? 20 : 15;
-
-            this.print_informative_block(blocks[i], size, this.nextBlocksTag[i]);
-        }
-    }
-
-    print_store_block(block) {
-        this.print_informative_block(block, 20, this.storeTag);
-    }
-
     print_informative_block(block, size, displayTag) {
+        // erase before block and print now block
+
         var h = block[1].length;
         var w = block[1][0].length;
 
@@ -132,6 +151,43 @@ class Board {
                 }
 
                 displayTag.appendChild(divTag);
+            }
+        }
+    }
+
+    print_next_blocks(blocks) {
+        for (let i = 0; i < blocks.length; i++) {
+            let size = i == 0 ? 20 : 15;
+
+            this.print_informative_block(blocks[i], size, this.nextBlocksTag[i]);
+        }
+    }
+
+    print_store_block(block) {
+        this.print_informative_block(block, 20, this.storeTag);
+    }
+
+    check_line_complete(idx) {
+        for (let i = 0; i < this.stage[idx].length; i++) {
+            if (this.stage[idx][i][0] == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    erase_complete_liens(idxs) {
+        for (let cls of idxs) {
+            for (let i = cls; i > 0; i--) {
+                for (let j = 0; j < this.stage[i].length; j++) {
+                    this.stage[i][j][0] = this.stage[i - 1][j][0];
+                    this.stage[i][j][1].style.backgroundColor = this.blockColorTable[this.stage[i][j][0]];
+                }
+            }
+
+            for (let i = 0; i < this.stage[0].length; i++) {
+                this.stage[0][i][0] = 0;
+                this.stage[0][i][1].style.backgroundColor = this.blockColorTable[0];
             }
         }
     }

@@ -31,19 +31,36 @@ class Game {
     }
 
     init_blocks() {
-        // int now mino(block) and next minos(blocks)
-        this.nowBlock = this.blockCreater.make_shape();
-        this.reset_offset();
-        this.calc_shadow_offset();
-
+        // init now mino(block) and next minos(blocks)
         for (let i = 0; i < this.nextBlocks.length; i++) {
             this.nextBlocks[i] = this.blockCreater.make_shape();
         }
 
-        console.log(this.shadowOffset);
+        this.make_now_block();
+    }
 
-        this.board.print_now_block(this.blockOffset, this.shadowOffset, this.nowBlock);
+    make_now_block() {
+        // change now block and add one next block
+        this.nowBlock = this.nextBlocks.shift();
+        this.reset_offset();
+        this.calc_shadow_offset();
+
+        this.nextBlocks.push(this.blockCreater.make_shape());
+
+        this.board.draw_block(this.blockOffset, this.shadowOffset, this.nowBlock,  false);
         this.board.print_next_blocks(this.nextBlocks);
+    }
+
+    set_auto_drop(time) {
+        this.autoDrop = setInterval(() => this.press_down_key(), time);
+    }
+
+    remove_auto_dorp() {
+        clearInterval(this.autoDrop);
+    }
+
+    game_over() {
+        console.log("game over");
     }
 
     reset_offset() {
@@ -116,5 +133,113 @@ class Game {
         }
 
         return true;
+    }
+
+    check_complete_lines() {
+        // check from high
+        var start = this.blockOffset[1];
+        var end = start + this.nowBlock[1].length;
+        var clearList = [];
+
+        for (let i = start; i < end ; i++) {
+            if (this.board.check_line_complete(i)) {
+                clearList.push(i);
+            }
+        }
+
+        return clearList;
+    }
+
+    keyboard_event(code) {
+        switch (code) {
+            case 37:
+                // left key
+                this.press_left_key();
+                break;
+            case 39:
+                this.press_right_key();
+                // right key
+                break;
+            case 40:
+                this.press_down_key();
+                // down key
+                break;
+            case 38:
+                this.press_up_key();
+                // up key
+                break;
+            case 67:
+                this.press_store_key();
+                // c key - store key
+                break;
+            case 32:
+                this.press_space_key();
+                // space key
+                break;
+            default:
+                break;
+        }
+    }
+
+    press_left_key() {
+
+    }
+
+    press_right_key() {
+
+    }
+
+    press_down_key() {
+        // move down one space immediately
+        this.remove_auto_dorp();
+        this.board.draw_block(this.blockOffset, this.shadowOffset, this.nowBlock, true);
+
+        this.blockOffset[1] += 1;
+
+        // move down - is Ok -> move and end;
+        if (this.check_overlap(this.blockOffset, true)) {
+            this.board.draw_block(this.blockOffset, this.shadowOffset, this.nowBlock, false);
+            this.set_auto_drop(this.dropInterval - this.countBlock);
+            return;
+        }
+
+        this.blockOffset[1] -= 1;
+        this.board.draw_block(this.blockOffset, this.shadowOffset, this.nowBlock, false);
+
+        // place block - is Ok -> place and change now block;
+        if (!this.check_overlap(this.blockOffset, false)) {
+            this.game_over();
+            return;
+        }
+
+        this.board.place_now_block(this.blockOffset, this.nowBlock);
+
+        // check complete lines
+        var clearLines = this.check_complete_lines();
+        if (clearLines.length > 0) {
+            this.board.erase_compelete_lines(clearLines);
+            // - this.score.add_score(clearLines.length)
+        }
+
+        // change now block
+        this.make_now_block();
+
+        // state variable change
+        this.countBlock += 1;
+        this.countRotate = 1;
+        this.storable = true;
+        this.set_auto_drop(this.dropInterval - this.countBlock);
+    }
+
+    press_up_key() {
+
+    }
+
+    press_store_key() {
+
+    }
+
+    press_space_key() {
+
     }
 }

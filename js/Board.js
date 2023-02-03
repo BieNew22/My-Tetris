@@ -176,7 +176,7 @@ class Board {
         return true;
     }
 
-    erase_complete_liens(idxs) {
+    erase_complete_lines(idxs) {
         for (let cls of idxs) {
             for (let i = cls; i > 0; i--) {
                 for (let j = 0; j < this.stage[i].length; j++) {

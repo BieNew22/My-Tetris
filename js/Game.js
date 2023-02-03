@@ -52,10 +52,11 @@ class Game {
     }
 
     set_auto_drop(time) {
+        console.log(time)
         this.autoDrop = setInterval(() => this.press_down_key(), time);
     }
 
-    remove_auto_dorp() {
+    remove_auto_drop() {
         clearInterval(this.autoDrop);
     }
 
@@ -135,6 +136,29 @@ class Game {
         return true;
     }
 
+    check_rotatable() {
+        // Wall kick on my own, Do not fllow link below
+        // SRS(Software Requirement Specification) : [https://tetris.wiki/Super_Rotation_System]
+
+        var tx = this.blockOffset[0];
+        var ty = this.blockOffset[1];
+
+        // routine format : change x-axis routine
+        // change x-axis routine : 0, -1, -2
+        var routine = [0, -1, 1, -2, 2];
+
+        for (let yRoutine = 0; yRoutine < 3; yRoutine++) {
+            for (let xRoutine of routine) {
+                if (this.check_overlap([tx - xRoutine, ty - yRoutine], true)) {
+                    this.blockOffset[0] = tx - xRoutine;
+                    this.blockOffset[1] = ty - yRoutine;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     check_complete_lines() {
         // check from high
         var start = this.blockOffset[1];
@@ -154,10 +178,10 @@ class Game {
         switch (code) {
             case 37:
                 // left key
-                this.press_left_key();
+                this.press_LR_key(1);
                 break;
             case 39:
-                this.press_right_key();
+                this.press_LR_key(-1);
                 // right key
                 break;
             case 40:
@@ -181,17 +205,30 @@ class Game {
         }
     }
 
-    press_left_key() {
+    press_LR_key(direction) {
+        // move left or right one space
+        // merge press_left_key and press_right_key function
+        // all codes are the same except direction
+        this.board.draw_block(this.blockOffset, this.shadowOffset, this.nowBlock, true);
 
-    }
+        this.blockOffset[0] -= direction;
 
-    press_right_key() {
+        // move is Ok -> move and recalc shadow offset
+        if (this.check_overlap(this.blockOffset, true)) {
+            this.calc_shadow_offset();
+        } else {
+            this.blockOffset[0] += direction;
+        }
 
+        this.board.draw_block(this.blockOffset, this.shadowOffset, this.nowBlock, false);
     }
 
     press_down_key() {
+        // reset count rotate
+        this.countRotate = 0;
+
         // move down one space immediately
-        this.remove_auto_dorp();
+        this.remove_auto_drop();
         this.board.draw_block(this.blockOffset, this.shadowOffset, this.nowBlock, true);
 
         this.blockOffset[1] += 1;
@@ -217,7 +254,7 @@ class Game {
         // check complete lines
         var clearLines = this.check_complete_lines();
         if (clearLines.length > 0) {
-            this.board.erase_compelete_lines(clearLines);
+            this.board.erase_complete_lines(clearLines);
             // - this.score.add_score(clearLines.length)
         }
 
@@ -226,20 +263,75 @@ class Game {
 
         // state variable change
         this.countBlock += 1;
-        this.countRotate = 1;
         this.storable = true;
         this.set_auto_drop(this.dropInterval - this.countBlock);
     }
 
     press_up_key() {
+        // rotate block
+        this.remove_auto_drop();
+        this.countRotate += 5;
 
+        var tBlock = this.nowBlock.slice();
+        var tOffset = this.blockOffset.slice();
+
+        this.nowBlock[1] = this.blockCreater.rotate_270deg_shape(this.nowBlock[1]);
+
+        if (!this.check_rotatable()) {
+            this.nowBlock = tBlock;
+            return;
+        }
+
+        // erase before block
+        this.board.draw_block(tOffset, this.shadowOffset, tBlock, true);
+        
+        // draw new block
+        this.calc_shadow_offset();
+        this.board.draw_block(this.blockOffset, this.shadowOffset, this.nowBlock, false);
+
+        // To prevent infinite rotation
+        this.set_auto_drop(500 - this.countRotate);
     }
 
     press_store_key() {
+        // one place - one store
+        if (!this.storable) {
+            return;
+        }
+        this.storable = false;
 
+        this.remove_auto_drop();
+        this.board.draw_block(this.blockOffset, this.shadowOffset, this.nowBlock, true);
+
+        if (this.storeBlock == null) {
+            // first store
+
+            this.storeBlock = this.nowBlock;
+
+            this.board.print_store_block(this.storeBlock);
+            this.make_now_block();
+        } else {
+            let tmp = this.storeBlock;
+            this.storeBlock = this.nowBlock;
+            this.nowBlock = tmp;
+
+            this.board.print_store_block(this.storeBlock);
+
+            this.reset_offset();
+            this.calc_shadow_offset();
+            this.board.draw_block(this.blockOffset, this.shadowOffset, this.nowBlock, false);
+        }
+
+        this.set_auto_drop(this.dropInterval - this.countBlock);
     }
 
     press_space_key() {
+        this.remove_auto_drop();
+        this.board.draw_block(this.blockOffset, this.shadowOffset, this.nowBlock, true);
 
+        this.blockOffset[0] = this.shadowOffset[0];
+        this.blockOffset[1] = this.shadowOffset[1];
+
+        this.press_down_key();
     }
 }

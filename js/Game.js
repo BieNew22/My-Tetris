@@ -2,12 +2,12 @@
  * Writer - 안학룡(BieNew22)
  * Role of file
  *          - Manage all current game states
- * Date of latest update - 2023.02.02 
+ * Date of latest update - 2023.02.03
  */
 
 class Game {
     constructor() {
-        this.score = new Score();
+        this.user = new User();
         this.board = new Board();
         this.blockCreater = new Block();
 
@@ -39,6 +39,23 @@ class Game {
         this.make_now_block();
     }
 
+    strat_game() {
+        this.init_blocks();
+        this.set_auto_drop(this.dropInterval - this.countBlock);
+    }
+
+    pause_game() {
+        this.remove_auto_drop();
+    }
+
+    restart_game() {
+        this.set_auto_drop(this.dropInterval - this.countBlock);
+    }
+
+    game_over() {
+
+    }
+
     make_now_block() {
         // change now block and add one next block
         this.nowBlock = this.nextBlocks.shift();
@@ -52,7 +69,6 @@ class Game {
     }
 
     set_auto_drop(time) {
-        console.log(time)
         this.autoDrop = setInterval(() => this.press_down_key(), time);
     }
 
@@ -145,7 +161,7 @@ class Game {
 
         // routine format : change x-axis routine
         // change x-axis routine : 0, -1, -2
-        var routine = [0, -1, 1, -2, 2];
+        var routine = [0, -1, 1, -2, 2, 3];
 
         for (let yRoutine = 0; yRoutine < 3; yRoutine++) {
             for (let xRoutine of routine) {
@@ -181,24 +197,25 @@ class Game {
                 this.press_LR_key(1);
                 break;
             case 39:
-                this.press_LR_key(-1);
                 // right key
+                this.press_LR_key(-1);
                 break;
             case 40:
-                this.press_down_key();
                 // down key
+                this.press_down_key();
                 break;
             case 38:
-                this.press_up_key();
                 // up key
+                this.press_up_key();
                 break;
             case 67:
-                this.press_store_key();
                 // c key - store key
+                this.press_store_key();
+
                 break;
             case 32:
-                this.press_space_key();
                 // space key
+                this.press_space_key();
                 break;
             default:
                 break;
@@ -277,17 +294,16 @@ class Game {
 
         this.nowBlock[1] = this.blockCreater.rotate_270deg_shape(this.nowBlock[1]);
 
-        if (!this.check_rotatable()) {
-            this.nowBlock = tBlock;
-            return;
-        }
-
-        // erase before block
-        this.board.draw_block(tOffset, this.shadowOffset, tBlock, true);
+        if (this.check_rotatable()) {
+            // erase before block
+            this.board.draw_block(tOffset, this.shadowOffset, tBlock, true);
         
-        // draw new block
-        this.calc_shadow_offset();
-        this.board.draw_block(this.blockOffset, this.shadowOffset, this.nowBlock, false);
+            // draw new block
+            this.calc_shadow_offset();
+            this.board.draw_block(this.blockOffset, this.shadowOffset, this.nowBlock, false);
+        } else {
+            this.nowBlock = tBlock;
+        }
 
         // To prevent infinite rotation
         this.set_auto_drop(500 - this.countRotate);
@@ -305,22 +321,20 @@ class Game {
 
         if (this.storeBlock == null) {
             // first store
-
             this.storeBlock = this.nowBlock;
 
-            this.board.print_store_block(this.storeBlock);
             this.make_now_block();
         } else {
             let tmp = this.storeBlock;
             this.storeBlock = this.nowBlock;
             this.nowBlock = tmp;
 
-            this.board.print_store_block(this.storeBlock);
-
             this.reset_offset();
             this.calc_shadow_offset();
             this.board.draw_block(this.blockOffset, this.shadowOffset, this.nowBlock, false);
         }
+
+        this.board.print_store_block(this.storeBlock);
 
         this.set_auto_drop(this.dropInterval - this.countBlock);
     }

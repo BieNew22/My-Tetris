@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="./css/left_side.css">
     <link rel="stylesheet" type="text/css" href="./css/right_side.css">
     <link rel="stylesheet" type="text/css" href="./css/center.css">
+    <link rel="stylesheet" type="text/css" href="./css/popup.css"
     <link rel="stylesheet" type="text/css" href="./css/footer.css">
 </head>
 <body>
@@ -25,7 +26,7 @@
             </div>
             <div id="buttons">
                 <button id="start" onclick="clickStart(this)" class="button_style">start</button>
-                <button id="infor" class="button_style">infor</button>
+                <button id="infor" onclick="clickInfor()" class="button_style">infor</button>
             </div>
         </div>
 
@@ -59,6 +60,12 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="popup_background" onclick="clickClose()" style="display: none;"></div>
+
+    <div id="popup_content" style="display: none;">
+        <div id="popup_close" onclick="clickClose()"></div>
     </div>
 
     <div id="footer">undefined</div>

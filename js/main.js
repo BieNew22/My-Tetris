@@ -3,7 +3,7 @@
  * Role of file
  *          - addEventListener
  *          - add Button click event control
- * Date of latest update - 2023.02.03
+ * Date of latest update - 2023.02.10
  */
 
 
@@ -13,10 +13,25 @@ function clickStart(obj) {
     let text = obj.innerText;
 
     if (text == "start") {
-        document.addEventListener("keydown", keyDownEvent, false);
-        gameControl.strat_game();
+        // display popup
+        let popupBack = document.getElementById("popup_background");
+        let popupTag = document.getElementById("popup_content");
 
-        obj.innerText = "pause";
+        popupTag.innerHTML = `
+        <div id="popup_close" onclick="clickClose()"></div>
+        <h2 style="margin:auto; padding-top: 20px; text-align:center;">
+            Enter Your Nickname</h2>
+        <div>
+            <input type="text" id="nickname" 
+                placeholder="Max nickname length is 7!" 
+                oninput="input_limit(this, 7)" required>
+            <span></span>
+        </div>
+        <button id="submit" onclick="clickSubmit()">submit</button>
+        `;
+
+        popupBack.style.display = "block";
+        popupTag.style.display = "block";
     } else if (text == "pause") {
         document.removeEventListener("keydown", keyDownEvent);
         gameControl.pause_game();
@@ -38,22 +53,40 @@ function clickInfor() {
     let popupTag = document.getElementById("popup_content");
     popupTag.innerHTML = `
     <div id="popup_close" onclick="clickClose()"></div>
-    <h2 style="margin:auto;padding-top: 20px; text-align:center;"> 게임 방법 </h2>
-    <h3 style="margin-left: 20px;">→ : 블럭 오른쪽으로 한 칸 이동</h3>
-    <h3 style="margin-left: 20px;">← : 블럭 왼쪽으로 한 칸 이동</h3>
-    <h3 style="margin-left: 20px;">↑ : 블럭 시계방향으로 회전</h3>
-    <h3 style="margin-left: 20px;">↓ : 블럭 한 칸 즉시 드랍</h3>
-    <h3 style="margin-left: 20px;">Ｃ : 블럭 저장 / 저장한 블럭과 교환</h3>
-    <h3 style="margin-left: 20px;">space bar : 블럭 즉시 드랍</h3>
-    <h3 style="margin-left: 20px;">연속으로 라인을 클리어 시 콤보 점수있습니다. </h3>
+    <h2 style="margin:auto;padding-top: 20px; text-align:center;">How To Play</h2>
+    <h3 style="margin-left: 20px;">← , → : Move mino(block) left or right.</h3>
+    <h3 style="margin-left: 20px;">↑ : Rotate mino(block) clockwise.</h3>
+    <h3 style="margin-left: 20px;">↓ : Soft down.</h3>
+    <h3 style="margin-left: 20px;">space : Hard down.</h3>
+    <h3 style="margin-left: 20px;">Ｃ : Store mino(block)</h3>
     `;
 
     popupBack.style.display = "block";
     popupTag.style.display = "block";
 }
 
-function clickClose() {
+// popup_display [input name] -> check_name -> game_start
+//                            -> re input name
+function clickSubmit() {
 
+    document.getElementById("start").innerText = "pause";
+    document.addEventListener("keydown", keyDownEvent, false);
+        
+    gameControl.start_game();
+}
+
+function input_limit(obj, limit) {
+    if (obj.value.length > limit) {
+        obj.value = obj.value.slice(0, limit);
+    }
+}
+
+function clickClose() {
+    let popupBack = document.getElementById("popup_background");
+    let popupTag = document.getElementById("popup_content");
+
+    popupBack.style.display = "none";
+    popupTag.style.display = "none";
 }
 
 function keyDownEvent(e) {

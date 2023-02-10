@@ -2,7 +2,7 @@
  * Writer - 안학룡(BieNew22)
  * Role of file
  *          - Manage all current game states
- * Date of latest update - 2023.02.03
+ * Date of latest update - 2023.02.10
  */
 
 class Game {
@@ -39,7 +39,9 @@ class Game {
         this.make_now_block();
     }
 
-    strat_game() {
+    start_game() {
+        this.user.init_name();
+        
         this.init_blocks();
         this.set_auto_drop(this.dropInterval - this.countBlock);
     }

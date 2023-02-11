@@ -51,3 +51,66 @@
 #popup_close::after {
     transform: rotate(-45deg);
 }
+
+#nickname_wrap {
+    position: relative;
+    margin: auto;
+    width: 300px;
+}
+
+#nickname {
+    position: relative;
+    font-size: 15px;
+    color: black;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid gray;
+    padding: 0px;
+    padding-bottom: 7px;
+    text-align: center;
+    background: none;
+    margin-top: 40px;
+}
+
+#nickname:focus {
+    outline: none;
+}
+
+#nickname_line {
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    background-color: black;
+    width: 0px;
+    height: 2px;
+    border-radius: 2px;
+    transform: translateX(-50%);
+    transition: all ease 0.5s;
+}
+
+#nickname:focus ~ #nickname_line, #nickname:valid ~ #nickname_line {
+    width: 100%;
+}
+
+#submit {
+    display: block;
+    width: 150px;
+    margin: 10px auto;
+    padding: 5px 0px;
+    border: 1px solid black;
+    background: white;
+    color: black;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: all ease 0.5s;
+}
+
+#submit:focus {
+    outline: none;
+}
+
+#submit:hover {
+    background: black;
+    color: white;
+}

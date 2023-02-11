@@ -3,7 +3,7 @@
  * Role of file
  *          - addEventListener
  *          - add Button click event control
- * Date of latest update - 2023.02.10
+ * Date of latest update - 2023.02.11
  */
 
 
@@ -21,11 +21,11 @@ function clickStart(obj) {
         <div id="popup_close" onclick="clickClose()"></div>
         <h2 style="margin:auto; padding-top: 20px; text-align:center;">
             Enter Your Nickname</h2>
-        <div>
+        <div id="nickname_wrap">
             <input type="text" id="nickname" 
                 placeholder="Max nickname length is 7!" 
                 oninput="input_limit(this, 7)" required>
-            <span></span>
+            <span id="nickname_line"></span>
         </div>
         <button id="submit" onclick="clickSubmit()">submit</button>
         `;
@@ -36,19 +36,20 @@ function clickStart(obj) {
         document.removeEventListener("keydown", keyDownEvent);
         gameControl.pause_game();
 
-        obj.innerText = "restart"
+        obj.innerText = "restart";
     } else {
         // text == "restart"
         document.addEventListener("keydown", keyDownEvent, false);
         gameControl.restart_game();
 
-        obj.innerText = "pause"
+        obj.innerText = "pause";
     }
 
     obj.blur();
 }
 
 function clickInfor() {
+    // popup - how to play
     let popupBack = document.getElementById("popup_background");
     let popupTag = document.getElementById("popup_content");
     popupTag.innerHTML = `
@@ -65,14 +66,20 @@ function clickInfor() {
     popupTag.style.display = "block";
 }
 
-// popup_display [input name] -> check_name -> game_start
-//                            -> re input name
 function clickSubmit() {
+    // close popup and start game
+    let name = document.getElementById("nickname").value;
+
+    if (name.length <= 0 || name.length > 7) {
+        return;
+    }
 
     document.getElementById("start").innerText = "pause";
     document.addEventListener("keydown", keyDownEvent, false);
-        
-    gameControl.start_game();
+    
+    clickClose();
+    
+    gameControl.start_game(name);
 }
 
 function input_limit(obj, limit) {
@@ -82,6 +89,7 @@ function input_limit(obj, limit) {
 }
 
 function clickClose() {
+    // close popup
     let popupBack = document.getElementById("popup_background");
     let popupTag = document.getElementById("popup_content");
 

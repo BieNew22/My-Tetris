@@ -2,7 +2,7 @@
  * Writer - 안학룡(BieNew22)
  * Role of file
  *          - Manage all current game states
- * Date of latest update - 2023.02.10
+ * Date of latest update - 2023.02.11
  */
 
 class Game {
@@ -39,8 +39,8 @@ class Game {
         this.make_now_block();
     }
 
-    start_game() {
-        this.user.init_name();
+    start_game(name) {
+        this.user.init_name(name);
         
         this.init_blocks();
         this.set_auto_drop(this.dropInterval - this.countBlock);
@@ -79,6 +79,23 @@ class Game {
     }
 
     game_over() {
+        // remove timer and key event
+        this.remove_auto_drop();
+        document.removeEventListener("keydown", keyDownEvent);
+
+        let popupBack = document.getElementById("popup_background");
+        let popupTag = document.getElementById("popup_content");
+
+        if (this.user.is_best()) {
+            // new record
+            popupTag.innerHTML = ``;
+        } else {
+            popupTag.innerHTML = ``;
+        }
+        
+
+        popupBack.style.display = "block";
+        popupTag.style.display = "block";
         console.log("game over");
     }
 
@@ -274,7 +291,7 @@ class Game {
         var clearLines = this.check_complete_lines();
         if (clearLines.length > 0) {
             this.board.erase_complete_lines(clearLines);
-            // - this.score.add_score(clearLines.length)
+            this.user.add_score(clearLines.length, this.countBlock);
         }
 
         // change now block

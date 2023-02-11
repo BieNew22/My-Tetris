@@ -1,8 +1,8 @@
 /**
  * Writer - 안학룡(BieNew22)
  * Role of file
- *          - manage user information (name, socre, rank)
- * Date of latest update - 2023.02.03
+ *          - manage user information (name, score, rank)
+ * Date of latest update - 2023.02.11
  */
 
 
@@ -17,7 +17,7 @@ class User {
         this.score = 0;
         this.bestScore = 0;
 
-        this.combo = 1;
+        this.combo = 0;
         this.lastBlockCount = 0;
 
         this.bestScoreTag = null;
@@ -44,9 +44,8 @@ class User {
         }
     }
 
-    init_name() {
-        let name = null;
-
+    init_name(name) {
+        this.name = name;
         this.update_score();
     }
 
@@ -54,7 +53,7 @@ class User {
         if (blockCount - this.lastBlockCount == 1) {
             this.combo = this.combo == 10 ? 10 : this.combo + 1;
         } else {
-            this.combo = 1;
+            this.combo = 0;
         }
 
         this.lastBlockCount = blockCount;

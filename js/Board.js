@@ -5,7 +5,7 @@
  *          - control stage state : minos(blocks) existence
  *          - print mino(block) and shadow currunt position
  *          - display next minos(blocks) and stored mino(block)
- * Date of latest update - 2023.02.02 
+ * Date of latest update - 2023.02.11
  */
 
 class Board {
@@ -41,6 +41,11 @@ class Board {
 
         var stageTag = document.getElementById("stage");
         var tableTag = document.createElement("table");
+
+        // remove all stage child
+        while (stageTag.firstChild) {
+            stageTag.removeChild(stageTag.firstChild);
+        }
 
         for (var i = 0; i < this.stage.length; i++) {
             var trTag = document.createElement("tr");

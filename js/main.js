@@ -14,24 +14,9 @@ function clickStart(obj) {
 
     if (text == "start") {
         // display popup
-        let popupBack = document.getElementById("popup_background");
-        let popupTag = document.getElementById("popup_content");
+        let popupManager = new Popup();
 
-        popupTag.innerHTML = `
-        <div id="popup_close" onclick="clickClose()"></div>
-        <h2 style="margin:auto; padding-top: 20px; text-align:center;">
-            Enter Your Nickname</h2>
-        <div id="nickname_wrap">
-            <input type="text" id="nickname" 
-                placeholder="Max nickname length is 7!" 
-                oninput="input_limit(this, 7)" required>
-            <span id="nickname_line"></span>
-        </div>
-        <button id="submit" onclick="clickSubmit()">submit</button>
-        `;
-
-        popupBack.style.display = "block";
-        popupTag.style.display = "block";
+        popupManager.display_input_nickname();
     } else if (text == "pause") {
         document.removeEventListener("keydown", keyDownEvent);
         gameControl.pause_game();
@@ -50,20 +35,9 @@ function clickStart(obj) {
 
 function clickInfor() {
     // popup - how to play
-    let popupBack = document.getElementById("popup_background");
-    let popupTag = document.getElementById("popup_content");
-    popupTag.innerHTML = `
-    <div id="popup_close" onclick="clickClose()"></div>
-    <h2 style="margin:auto;padding-top: 20px; text-align:center;">How To Play</h2>
-    <h3 style="margin-left: 20px;">← , → : Move mino(block) left or right.</h3>
-    <h3 style="margin-left: 20px;">↑ : Rotate mino(block) clockwise.</h3>
-    <h3 style="margin-left: 20px;">↓ : Soft down.</h3>
-    <h3 style="margin-left: 20px;">space : Hard down.</h3>
-    <h3 style="margin-left: 20px;">Ｃ : Store mino(block)</h3>
-    `;
+    let popupManager = new Popup();
 
-    popupBack.style.display = "block";
-    popupTag.style.display = "block";
+    popupManager.display_infor();
 }
 
 function clickSubmit() {
@@ -90,11 +64,9 @@ function input_limit(obj, limit) {
 
 function clickClose() {
     // close popup
-    let popupBack = document.getElementById("popup_background");
-    let popupTag = document.getElementById("popup_content");
+    let popupManager = new Popup();
 
-    popupBack.style.display = "none";
-    popupTag.style.display = "none";
+    popupManager.hidden();
 }
 
 function keyDownEvent(e) {

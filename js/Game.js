@@ -55,7 +55,26 @@ class Game {
     }
 
     game_over() {
+        // remove timer and key event
+        this.remove_auto_drop();
+        document.removeEventListener("keydown", keyDownEvent);
 
+        let popupManager = new Popup();
+        let popupBack = document.getElementById("popup_background");
+        let popupTag = document.getElementById("popup_content");
+
+        if (this.user.is_best()) {
+            // new record
+            popupManager.display_new_record();
+            this.user.store_score();
+        } else {
+            popupManager.display_game_over();
+        }
+        
+
+        popupBack.style.display = "block";
+        popupTag.style.display = "block";
+        console.log("game over");
     }
 
     make_now_block() {
@@ -76,27 +95,6 @@ class Game {
 
     remove_auto_drop() {
         clearInterval(this.autoDrop);
-    }
-
-    game_over() {
-        // remove timer and key event
-        this.remove_auto_drop();
-        document.removeEventListener("keydown", keyDownEvent);
-
-        let popupBack = document.getElementById("popup_background");
-        let popupTag = document.getElementById("popup_content");
-
-        if (this.user.is_best()) {
-            // new record
-            popupTag.innerHTML = ``;
-        } else {
-            popupTag.innerHTML = ``;
-        }
-        
-
-        popupBack.style.display = "block";
-        popupTag.style.display = "block";
-        console.log("game over");
     }
 
     reset_offset() {

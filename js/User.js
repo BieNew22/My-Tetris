@@ -11,7 +11,6 @@ class User {
         this.nameKey = "mt_b_name";
         this.scoreKey = "mt_b_score";
 
-
         this.name = "None";
         
         this.score = 0;

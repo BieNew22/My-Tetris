@@ -66,7 +66,9 @@ class Popup {
                 Congratulation!!</h2>
             <h3 style="margin:auto; padding-top: 10px; text-align:center;">
                 New Record!! </h3>
-            {score}
+            <h4 style="margin:auto; padding-top: 10px; text-align:center;">
+                ${score} </h4>
+            <canvas id="canvas"></canvas>
         `;
 
         this.display();

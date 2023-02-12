@@ -67,6 +67,9 @@ class Game {
             // new record
             popupManager.display_new_record();
             this.user.store_score();
+
+            let cm = new ConfettiManager();
+            cm.start_confetti();
         } else {
             popupManager.display_game_over();
         }

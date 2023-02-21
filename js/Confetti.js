@@ -2,9 +2,10 @@
  * Writer - 안학룡(BieNew22)
  * Role of this file
  *              - manage confetti when a user sets a new record
- *              - orginal source : https://kmkblog.tistory.com/292#google_vignette 
+ *              - orginal source : https://kmkblog.tistory.com/292 
  *              - changes : remove jQuery, function -> class
- * Date of latest update - 2023.02.12
+ *              - confettiManger use singleton pattern
+ * Date of latest update - 2023.02.21
  */
 
 
@@ -42,14 +43,21 @@ class ConfettiParticle {
     }
 
     reposition(x, y, tilt) {
+        // when particle moving out 
         this.x = x;
         this.y = y;
         this.tilt = tilt;
     }
 }
 
+
+let confettiManagerInstance = null;
 class ConfettiManager {
     constructor() {
+        if (confettiManagerInstance != null) {
+            return confettiManagerInstance;
+        }
+
         this.confettiActive = false;
 
         this.animationComplete = true;
@@ -61,7 +69,7 @@ class ConfettiManager {
             colorList: ["DodgerBlue", "OliveDrab", "Gold", "pink", "SlateBlue", "lightblue", "Violet", "PaleGreen", "SteelBlue", "SandyBrown", "Chocolate", "Crimson"],
             colorIndex: 0,
             colorIncrementer: 0,
-            colorThreshold: 10,
+            colorThreshold: 5,
             getColor: function () {
                 if (this.colorIncrementer >= this.colorThreshold) {
                     this.colorIncrementer = 0;
@@ -76,20 +84,21 @@ class ConfettiManager {
         };
 
         this.angle = 0;
+        this.particleNumber = 50;
 
-        this.particleNumber = 150;
-        this.particleList = new Array();
+        confettiManagerInstance = this;
+    }
 
+    start_confetti() {
+        // init canvas
         this.canvas = document.getElementById("canvas");
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        this.canvas.width = this.canvas.width * 2;
+        this.canvas.height = this.canvas.height * 2;
 
         this.ctx = this.canvas.getContext("2d");
         this.ctx.width = this.canvas.width;
         this.ctx.height = this.canvas.height;
-    }
 
-    start_confetti() {
         this.confettiActive = true;
         this.animationComplete = false;
         
@@ -98,6 +107,7 @@ class ConfettiManager {
             this.particleList.push(new ConfettiParticle(this.particleColor.getColor(), this.ctx, this.particleNumber));
         }
 
+        // start animation
         this.animation_loop(this);
 
         setTimeout((obj)=>{obj.deactive_confetti();}, this.animationDuration, this);
@@ -113,6 +123,10 @@ class ConfettiManager {
         // end confetti
         this.animationComplete = true;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    is_active() {
+        return this.confettiActive;
     }
 
     animation_loop(obj) {

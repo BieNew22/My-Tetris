@@ -3,7 +3,7 @@
  * Role of file
  *          - manage popup (display/content, content)
  *          - use singleton pattern
- * Date of latest update - 2023.02.11
+ * Date of latest update - 2023.02.21
  */
 
 let popupInstance = null;
@@ -52,31 +52,39 @@ class Popup {
                     oninput="input_limit(this, 7)" required>
                 <span id="nickname_line"></span>
             </div>
-            <button id="submit" onclick="clickSubmit()">submit</button>
+            <button class="submit simplebutton" onclick="clickSubmit()">submit</button>
         `;
 
         this.display();
     }
 
-    display_new_record() {
-        let score = 100;
+    display_new_record(score) {
         this.popupContent.innerHTML = `
-            <div id="popup_close" onclick="clickClose()"></div>
+            <div id="popup_close" onclick="clickEnd()"></div>
             <h2 style="margin:auto; padding-top: 20px; text-align:center;">
                 Congratulation!!</h2>
-            <h3 style="margin:auto; padding-top: 10px; text-align:center;">
+            <h3 style="margin:auto; margin-top: 10px; padding-top: 10px; text-align:center;">
                 New Record!! </h3>
-            <h4 style="margin:auto; padding-top: 10px; text-align:center;">
+            <h4 style="margin: 20px auto; text-align:center;">
                 ${score} </h4>
+            <button class="check simplebutton" onclick="clickEnd()">check</button>
             <canvas id="canvas"></canvas>
         `;
 
         this.display();
     }
 
-    display_game_over() {
-        this.popupContent.innerHTML = ``;
-
+    display_game_over(score) {
+        this.popupContent.innerHTML = `
+            <div id="popup_close" onclick="clickEnd()"></div>
+            <h2 style="margin:auto; padding-top: 20px; text-align:center;">
+                Record fail...!!</h2>
+            <h4 style="margin:auto; margin-top: 10px; padding-top: 10px; text-align:center;">
+                Your Score</h4>
+            <h3 style="margin: 15px auto; text-align:center;">
+                ${score} </h3>
+            <button class="end simplebutton" onclick="clickEnd()">check</button>
+        `;
         this.display();
     }
 }

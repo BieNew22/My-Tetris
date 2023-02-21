@@ -3,7 +3,7 @@
  * Role of file
  *          - addEventListener
  *          - add Button click event control
- * Date of latest update - 2023.02.11
+ * Date of latest update - 2023.02.21
  */
 
 
@@ -56,6 +56,12 @@ function clickSubmit() {
     gameControl.start_game(name);
 }
 
+function clickEnd() {
+    // close popup and reload page
+    clickClose();
+    location.reload();
+}
+
 function input_limit(obj, limit) {
     if (obj.value.length > limit) {
         obj.value = obj.value.slice(0, limit);
@@ -63,10 +69,15 @@ function input_limit(obj, limit) {
 }
 
 function clickClose() {
-    // close popup
+    // close popup and clear confetti if active
     let popupManager = new Popup();
+    let confettiManger = new ConfettiManager();
 
     popupManager.hidden();
+
+    if (confettiManger.is_active()) {
+        confettiManger.end_confetti();
+    }
 }
 
 function keyDownEvent(e) {

@@ -1,7 +1,7 @@
 # My-Tetris (Object oriented)
 
 <div>
-    <h2 align="center">🎮 Play & Enjoy</h2>
+    <p align="center" style="font-size:40px"><b>🎮 Play & Enjoy</b></p>
     <div align="center">
         <a href="https://bienew22.github.io/My-Tetris/">
             <p>👉&nbsp; &nbsp;https://bienew22.github.io/My-Tetris/&nbsp; &nbsp;👈</p>

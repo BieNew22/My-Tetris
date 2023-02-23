@@ -5,7 +5,7 @@
  *          - control stage state : minos(blocks) existence
  *          - print mino(block) and shadow currunt position
  *          - display next minos(blocks) and stored mino(block)
- * Date of latest update - 2023.02.11
+ * Date of latest update - 2023.02.23
  */
 
 class Board {
@@ -79,6 +79,10 @@ class Board {
                 this.stage[oy + i][ox + j][0] = block[0];
             }
         }
+
+        // add drop sound
+        let sound = new AudioPlayer();
+        sound.play_music("DS");
     }
 
     draw_block(offset, shadowOffset, block, isErase) {
@@ -195,5 +199,9 @@ class Board {
                 this.stage[0][i][1].style.backgroundColor = this.blockColorTable[0];
             }
         }
+
+        // add clear line sound
+        let ap = new AudioPlayer();
+        ap.play_music("CL");
     }
 }

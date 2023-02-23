@@ -2,7 +2,7 @@
  * Writer - 안학룡(BieNew22)
  * Role of file
  *          - Manage all current game states
- * Date of latest update - 2023.02.21
+ * Date of latest update - 2023.02.23
  */
 
 class Game {
@@ -60,16 +60,22 @@ class Game {
         document.removeEventListener("keydown", keyDownEvent);
 
         let popupManager = new Popup();
-
+        let ap = new AudioPlayer();
         if (this.user.is_best()) {
             // new record
             popupManager.display_new_record(this.user.score);
             this.user.store_score();
 
+            // add confetti and bgm
             let cm = new ConfettiManager();
+
             cm.start_confetti();
+            ap.play_music("NR");
         } else {
             popupManager.display_game_over(this.user.score);
+
+            // add game over bgm
+            ap.play_music("GO");
         }
     }
 

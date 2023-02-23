@@ -1,0 +1,14 @@
+#footer {
+    position: absolute;
+    left: 0px;
+    bottom: 50px;
+    width: 100%;
+    height: 50px;
+}
+
+#footer p {
+    width: auto;
+    color: rgb(150, 150, 150);
+    padding: 0;
+    text-align: center;
+}

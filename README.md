@@ -10,12 +10,12 @@
 </div>
 <br>
 
-## **🫀 Features**
+## **⚡ Features**
 * Implement using only pure js
 <br>
 <br>
 
-## **🫀 How to play?**
+## **🙋 How to play?**
 |Key|Explanation|
 |:---:|:---:|
 |**← , → , ↓**|Move block.|
@@ -25,13 +25,18 @@
 <br>
 <br>
 
-## **🫀 Reasons for development**
+## **🧠 Reasons for development**
 1. 군대에서 **심심해서** (I was bored in the army)
 2. **git 공부 및 실습**을 하고 싶어서 (study and practice git)
 <br>
 <br>
 
-## **🫀 Feedback**
+## **🛠 Feedback**
 - Back-end 미구현 (back-end not implemented)
    - Use localStorage to implement best score.
 - Sadly, the design is my best... 😢
+<br>
+<br>
+
+## **😁 Update logs**
+- 23.02.26 : Completion of the plan.
